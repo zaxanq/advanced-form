@@ -1,0 +1,20 @@
+=size($w, $h)
+  width: $w
+  height: $h
+
+=max-size($w, $h)
+  max-width: $w
+  max-height: $h
+
+=min-size($w, $h)
+  min-width: $w
+  min-height: $h
+
+=flex($jc, $ai)
+  display: flex
+  justify-content: $jc
+  align-items: $ai
+
+=flex-fdc($jc, $ai)
+  flex-direction: column
+  +flex($jc, $ai)

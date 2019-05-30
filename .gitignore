@@ -1,0 +1,6 @@
+.idea/
+.git/
+node_modules/
+app/assets/styles/css/
+
+package-lock.json
