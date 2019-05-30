@@ -1,0 +1,70 @@
+.input,
+.button
+  border: $border-1-dark-400
+  transition: background-color 0.15s ease-in-out
+  font: inherit
+  outline: none
+
+.button
+  padding: 0.4rem 2rem 0.4rem
+
+  &--next-step
+    position: relative
+    padding-right: 2.5rem
+
+    &::before
+      content: '»'
+      position: absolute
+      font-size: 2.5rem
+      top: 45%
+      transform: translateY(-50%)
+      right: 0.5rem
+
+.input
+  border-bottom: $border-4-dark-400
+  background-color: #fff
+
+  &--text
+    padding: 0.8rem 2.4rem
+
+  &:focus,
+  &:hover
+    background-color: $color-main-400
+
+  &-container
+    position: relative
+    +flex-fdc(flex-start, flex-start)
+
+  &-error
+    +size(150%, 1.5rem)
+    color: $color-wrong
+    position: absolute
+    left: 0
+    bottom: -1.5rem
+    font-size: 1.2rem
+
+.validation
+  +flex(center, center)
+  +size(2rem, 2rem)
+  position: relative
+  margin-right: 0.5rem
+  font-family: 'Roboto', sans-serif
+  font-weight: 400
+
+  &::after
+    content: ''
+    color: $color-light-400
+    transition: color 0.25s ease-in-out
+    position: absolute
+
+.validation--invalid::after
+  content: '×'
+  font-size: 3.6rem
+  font-weight: 400
+  color: $color-wrong
+
+.validation--valid::after
+  content: '✓'
+  font-size: 2.6rem
+  font-weight: 700
+  color: $color-correct

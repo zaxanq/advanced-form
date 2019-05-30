@@ -21,11 +21,12 @@
       <div class="block">
         <div class="row">
           <div class="cell">
-            <input class="input input--text" id="username" maxlength="16" minlength="4"
-                   name="register__username" placeholder="JohnDoe" required size="16" type="text">
-            <!-- TODO: Add pattern to not allow user to add space or characters other than letters/numbers in front
-                  and the end of name, i.e.: allowed - 'user', not allowed - '.user', 'user.', '_user' -->
             <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="username" maxlength="16" minlength="4"
+                     name="register__username" placeholder="JohnDoe" required size="16" type="text">
+              <span class="input-error"></span>
+            </div>
           </div>
           <div class="cell">
             <label for="username">Username</label>
@@ -34,9 +35,12 @@
 
         <div class="row">
           <div class="cell">
-            <input class="input input--text" id="email" maxlength="16" minlength="4"
-                   name="register__email" placeholder="john.doe@gmail.com" required size="16" type="email">
             <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="email" maxlength="128" minlength="4"
+                     name="register__email" placeholder="john.doe@gmail.com" required size="16" type="email">
+              <span class="input-error"></span>
+            </div>
           </div>
           <div class="cell">
             <label for="email">E-mail address</label>
@@ -45,11 +49,12 @@
 
         <div class="row">
           <div class="cell">
-            <input class="input input--text" id="password" maxlength="32" minlength="6"
-                   name="register__password" placeholder="johndoe123" required size="16" type="password">
-            <!-- TODO: Password cannot have 3 same characters in a row, should contain one character other than
-                  letters or numbers -->
             <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="password" maxlength="32" minlength="6"
+                     name="register__password" placeholder="johndoe123" required size="16" type="password">
+              <span class="input-error"></span>
+            </div>
           </div>
           <div class="cell">
             <label for="password">Password</label>
@@ -58,20 +63,37 @@
 
         <div class="row">
           <div class="cell">
-            <input class="input input--text" id="repeatpassword" maxlength="32" minlength="6"
-                   name="register__repeatpassword" placeholder="johndoe123" required size="16" type="password">
             <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="repeat-password" maxlength="32" minlength="6"
+                     name="register__repeat-password" placeholder="johndoe123" required size="16" type="password">
+              <span class="input-error"></span>
+            </div>
           </div>
           <div class="cell">
-            <label for="repeatpassword">Repeat password</label>
+            <label for="repeat-password">Repeat password</label>
           </div>
         </div>
 
         <div class="row">
           <div class="cell">
-            <input class="input input--text" id="firstname" maxlength="32" minlength="2"
-                   name="register__firstname" placeholder="John" required size="16" type="text">
+            <button class="button button--next-step">Proceed</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="content__page--2 content__page">
+      <div class="block">
+        <div class="row">
+          <div class="cell">
             <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="firstname" maxlength="32" minlength="2"
+                     name="register__firstname" placeholder="John" required size="16" type="text">
+              <span class="input-error"></span>
+            </div>
           </div>
           <div class="cell">
             <label for="firstname">First name</label>
@@ -80,32 +102,60 @@
 
         <div class="row">
           <div class="cell">
-            <input class="input input--text" id="lastname" maxlength="32" minlength="2"
-                   name="register__lastname" placeholder="Doe" size="16" type="text">
             <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="lastname" maxlength="32" minlength="2"
+                     name="register__lastname" placeholder="Doe" size="16" type="text">
+              <span class="input-error"></span>
+            </div>
           </div>
           <div class="cell">
             <label for="lastname">Last name</label>
           </div>
         </div>
 
+        <div class="row">
+          <div class="cell">
+            <button class="button button--next-step">Proceed</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="content__page--2 content__page">
-      Step drugi
-    </div>
-
     <div class="content__page--3 content__page">
-      Kolejny step po drugim to step 3.
+      <div class="block">
+
+
+        <div class="row">
+          <div class="cell">
+            <button class="button button--next-step">Proceed</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="content__page--4 content__page">
-      Etap czwarty.
+      <div class="block">
+
+
+        <div class="row">
+          <div class="cell">
+            <button class="button button--next-step">Proceed</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="content__page--5 content__page">
-      Last but not least!
+      <div class="block">
+
+
+        <div class="row">
+          <div class="cell">
+            <button class="button button--next-step">Proceed</button>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </div>
