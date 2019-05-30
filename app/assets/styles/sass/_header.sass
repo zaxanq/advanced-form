@@ -1,0 +1,28 @@
+.tabs
+  +flex(flex-start, flex-end)
+  height: $tabs-height
+
+.menu
+  +flex(space-evenly, center)
+  flex: 1
+  height: 100%
+  border-bottom: $border-2-dark
+
+  &__item
+    +flex(center, flex-end)
+    height: 100%
+    padding: 0 1.6rem 0.8rem
+    margin-right: -0.2rem
+    border: $border-1-dark
+    border-bottom: none
+    background-color: $main-color
+    transition: border 0.1s ease-in-out
+
+    &.tab--active
+      border-top: $border-4-dark
+
+    &.tab--disabled
+      background-color: $sublight-color
+
+    &.tab--available
+      cursor: pointer
