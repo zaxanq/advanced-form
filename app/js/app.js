@@ -4,6 +4,7 @@ class Form {
     this.stepCount = 5;
     this.registerElements();
     this.setStep();
+    this.initValidators();
   }
 
   registerElements() {
@@ -12,6 +13,7 @@ class Form {
     this.setTabClicks();
   }
 
+  // -------------------- Tabs -------------------- //
   setTabClicks() {
     for (let i = 0; i < this.tabs.length; i++) {
       this.tabs[i].addEventListener('click', () => {
@@ -51,6 +53,31 @@ class Form {
     this.setStep();
   }
 
+  // -------------------- Content -------------------- //
+
+  initValidators() {
+    this.textInputs = this.class('input--text', false);
+
+    [...this.textInputs].map(input => {
+      let validator = input.nextElementSibling;
+      input.addEventListener('input', () => {
+        if (this.validateInputs(input)) {
+          this.addClass('validation--invalid', validator);
+          this.removeClass('validation--valid', validator);
+        } else {
+          this.removeClass('validation--invalid', validator);
+          this.addClass('validation--valid', validator);
+        }
+      });
+    })
+  }
+
+  validateInputs(input) {
+    if (!input.checkValidity()) return false;
+    return true;
+  }
+
+  // -------------------- Helpful methods -------------------- //
   class(className, firstOnly = true) {
     let elements = document.getElementsByClassName(className);
     return firstOnly ? elements[0] : elements;
