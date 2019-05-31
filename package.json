@@ -1,6 +1,6 @@
 {
   "name": "advanced-form",
-  "version": "0.2.2",
+  "version": "0.2.7",
   "description": "",
   "main": "gulpfile.js",
   "scripts": {
@@ -12,6 +12,7 @@
     "browser-sync": "^2.26.5",
     "gulp": "3.9.1",
     "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.5"
+    "gulp-sourcemaps": "^2.6.5",
+    "handlebars": "^4.1.2"
   }
 }

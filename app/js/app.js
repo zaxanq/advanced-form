@@ -3,6 +3,7 @@ class Form {
     this.step = 1;
     this.stepCount = 5;
     this.registerElements();
+    this.initNextStepButton();
     this.disableStepChange();
     this.setStep();
     this.initValidators();
@@ -12,7 +13,6 @@ class Form {
   registerElements() {
     this.tabs = this.class('tab', false);
     this.pages = this.class('content__page', false);
-    this.nextStepButtons = this.class('button--next-step', false);
     this.setTabClicks();
   }
 
@@ -44,16 +44,9 @@ class Form {
         this.addClass('tab--disabled', this.tabs[i]);
       }
     }
-    if (this.step < this.stepCount) {
-      this.addClass('tab--available', this.tabs[this.step]);
-    }
+    this.addClass('tab--available', this.tabs[this.step - 1]);
     this.addClass('tab--active', this.tabs[this.step - 1]);
     this.addClass('page--active', this.pages[this.step - 1]);
-  }
-
-  changeStep(step) {
-    this.step = step;
-    this.setStep();
   }
 
   // -------------------- Content -------------------- //
@@ -72,9 +65,7 @@ class Form {
           if (this.checkStepInputs(this.step)) {
             this.allowStepChange();
           } else {
-            // this.disableStepChange();
-            // Commented to style "Proceed" button easier.
-            // TODO: style "Proceed" button
+            this.disableStepChange();
           }
         } else {
           this.addClass('validation--invalid', validator);
@@ -89,6 +80,9 @@ class Form {
   }
 
   saveInputValue(input) {
+    if (input.id === 'first-name' || input.id === 'last-name') {
+      input.value = input.value.charAt(0).toUpperCase() + input.value.slice(1);
+    }
     this.Data[input.id] = input.value;
     console.log(this.Data);
   }
@@ -117,6 +111,16 @@ class Form {
       }
       if ((new RegExp(/(\w)\1{2}/)).test(input.value)) {
         return {result: false, reason: 'Password cannot have 3 same characters in a row.'}
+      }
+      if (input.value.toLowerCase() === this.Data.username.toLowerCase() ||
+        input.value.toLowerCase().includes(this.Data.username.toLowerCase())) {
+        return {result: false, reason: 'Password cannot be similar to username.'}
+      }
+      let valueLC = input.value.toLowerCase();
+      let emailLC = this.Data.email.toLowerCase();
+      if (valueLC === emailLC ||
+        (emailLC !== '' && valueLC.includes(emailLC.slice(0, emailLC.indexOf('@'))))) {
+        return {result: false, reason: 'Password cannot be similar to email address.'}
       }
     } else if (input.id === 'repeat-password') {
       if (input.value !== this.Data.password) {
@@ -152,6 +156,22 @@ class Form {
       }
     }
     return true;
+  }
+
+  // -------------------- Step mechanics ------------------- //
+  initNextStepButton() {
+    this.nextStepButtons = this.class('button--next-step', false);
+
+    for (let i = 0; i < this.nextStepButtons.length; i++) {
+      this.nextStepButtons[i].addEventListener('click', () => {
+        this.changeStep(i+2);
+      });
+    }
+  }
+
+  changeStep(step) {
+    this.step = step;
+    this.setStep();
   }
 
   allowStepChange() {
