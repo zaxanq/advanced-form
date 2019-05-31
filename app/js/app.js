@@ -38,15 +38,19 @@ class Form {
       this.removeClass('tab--active', this.tabs[i]);
       this.removeClass('page--active', this.pages[i]);
       this.removeClass('tab--disabled', this.tabs[i]);
+      this.hideElement(this.pages[i]);
     }
     for (let i = this.step; i < this.stepCount; i++) {
       if (!this.hasClass('tab--available', this.tabs[i])) {
         this.addClass('tab--disabled', this.tabs[i]);
       }
     }
+    this.showElement(this.pages[this.step - 1]);
     this.addClass('tab--available', this.tabs[this.step - 1]);
-    this.addClass('tab--active', this.tabs[this.step - 1]);
-    this.addClass('page--active', this.pages[this.step - 1]);
+    setTimeout(() => {
+      this.addClass('tab--active', this.tabs[this.step - 1]);
+      this.addClass('page--active', this.pages[this.step - 1]);
+    }, 0);
   }
 
   // -------------------- Content -------------------- //
@@ -151,7 +155,7 @@ class Form {
 
   checkInputs(inputs) {
     for (let i = 0; i < inputs.length; i++) {
-      if (!this.id(inputs[i]).value || this.id(inputs[i]).value === '' || !this.validateInput(this.id(inputs[i]))) {
+      if (!this.id(inputs[i]).value || this.id(inputs[i]).value === '' || !this.validateInput(this.id(inputs[i])).result) {
         return false;
       }
     }
@@ -202,6 +206,14 @@ class Form {
 
   hasClass(className, element) {
     return element.classList.contains(className);
+  }
+
+  showElement(element) {
+    element.style.display ='block';
+  }
+
+  hideElement(element) {
+    element.style.display = 'none';
   }
 }
 
