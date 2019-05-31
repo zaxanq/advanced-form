@@ -70,6 +70,14 @@
     position: relative
     +flex-fdc(flex-start, flex-start)
 
+    &.required::before
+      content: '*'
+      position: absolute
+      color: $color-wrong
+      line-height: 1
+      top: 0.4rem
+      right: 0.6rem
+
   &-error
     +size(150%, 1.5rem)
     color: $color-wrong

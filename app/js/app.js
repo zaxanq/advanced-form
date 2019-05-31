@@ -1,6 +1,6 @@
 class Form {
   init() {
-    this.step = 1;
+    this.step = 2;
     this.stepCount = 5;
     this.registerElements();
     this.initNextStepButton();
@@ -13,6 +13,9 @@ class Form {
   registerElements() {
     this.tabs = this.class('tab', false);
     this.pages = this.class('content__page', false);
+
+    this.addRequireMarks();
+    this.initPhoneNumberInput();
     this.setTabClicks();
   }
 
@@ -21,6 +24,7 @@ class Form {
     for (let i = 0; i < this.tabs.length; i++) {
       this.tabs[i].addEventListener('click', () => {
         if (this.allowTabStepChange(i)) {
+          console.log(i);
           this.changeStep(i + 1);
         }
       });
@@ -55,6 +59,25 @@ class Form {
 
   // -------------------- Content -------------------- //
 
+  addRequireMarks() {
+    let inputs = document.getElementsByTagName('input');
+    [...inputs].map(input => {
+      if (input.required) {
+        this.addClass('required', input.parentNode);
+      }
+    });
+  }
+
+  initPhoneNumberInput() {
+    let phoneNumberInput =  this.id('phone-number');
+    phoneNumberInput.value = '+48';
+    phoneNumberInput.addEventListener('input', () => {
+      if (!this.id('phone-number').value.startsWith('+')) {
+        this.id('phone-number').value = '+';
+      }
+    });
+  }
+
   initValidators() {
     this.textInputs = this.class('input--text', false);
     [...this.textInputs].map(input => {
@@ -62,16 +85,16 @@ class Form {
       let errorContainer = input.nextElementSibling;
       input.addEventListener('input', () => {
         let validation = this.validateInput(input);
+        console.log('validation');
         if (validation.result) {
           this.removeClass('validation--invalid', validator);
           this.addClass('validation--valid', validator);
           this.renderInputError(errorContainer, '');
-          if (this.checkStepInputs(this.step)) {
+          if (this.checkStepInputs()) {
             this.allowStepChange();
-          } else {
-            this.disableStepChange();
           }
         } else {
+          this.disableStepChange();
           this.addClass('validation--invalid', validator);
           this.removeClass('validation--valid', validator);
           this.renderInputError(errorContainer, validation.reason);
@@ -109,16 +132,24 @@ class Form {
       if (!(new RegExp(/^[a-zA-Z0-9]/)).test(input.value)) {
         return {result: false, reason: 'Email address must start with a letter or a digit'};
       }
-    } else if (input.id === 'password') {
-      if (!input.checkValidity()) {
+    } else if (input.id === 'password' || input.id === 'repeat-password') {
+      let passwordInput = this.id('password');
+      let retypepwInput = this.id('repeat-password');
+
+      if (!passwordInput.checkValidity()) {
         return {result: false, reason: 'Password is too short.'}
       }
-      if ((new RegExp(/(\w)\1{2}/)).test(input.value)) {
+      if ((new RegExp(/(\w)\1{2}/)).test(passwordInput.value)) {
         return {result: false, reason: 'Password cannot have 3 same characters in a row.'}
       }
-      if (input.value.toLowerCase() === this.Data.username.toLowerCase() ||
-        input.value.toLowerCase().includes(this.Data.username.toLowerCase())) {
+      if (passwordInput.value.toLowerCase() === this.Data.username.toLowerCase() ||
+        passwordInput.value.toLowerCase().includes(this.Data.username.toLowerCase())) {
         return {result: false, reason: 'Password cannot be similar to username.'}
+      }
+      if (typeof retypepwInput.value !== 'undefined' && retypepwInput.value !== '') {
+          if (passwordInput.value !== retypepwInput.value) {
+            return {result: false, reason: 'Passwords cannot be different.'}
+          }
       }
       let valueLC = input.value.toLowerCase();
       let emailLC = this.Data.email.toLowerCase();
@@ -130,6 +161,20 @@ class Form {
       if (input.value !== this.Data.password) {
         return {result: false, reason: 'Passwords cannot be different.'}
       }
+    } else if (input.id === 'phone-number') {
+      if (!(new RegExp(/^[0-9+]+$/)).test(input.value)) {
+        return {result: false, reason: 'Phone number can contain only numbers.'}
+      }
+      if (input.value.length < 12) {
+        return {result: false, reason: 'Invalid phone number.'}
+      }
+    } else if (input.id === 'first-name' || input.id === 'last-name') {
+      if (input.value === '' && input.required) {
+        return {result: false, reason: 'Name is required.'}
+      }
+      if (!(new RegExp(/^[a-zA-Z ']+$/)).test(input.value) && input.value !== '') {
+        return {result: false, reason: 'Name can contain only letters, spaces and an apostrophe.'}
+      }
     }
     return {result: true, reason: ''};
   }
@@ -138,16 +183,17 @@ class Form {
     container.innerText = reason;
   }
 
-  checkStepInputs(step) {
-    if (step === 1) {
+  checkStepInputs() {
+    console.log(this.step);
+    if (this.step === 1) {
       if (this.checkInputs(['username', 'email', 'password', 'repeat-password'])) {
         return true;
       }
-    } else if (step === 2) {
+    } else if (this.step === 2) {
       return true;
-    } else if (step === 3) {
+    } else if (this.step === 3) {
       return true;
-    } else if (step === 4) {
+    } else if (this.step === 4) {
       return true;
     }
     return false;
@@ -168,7 +214,7 @@ class Form {
 
     for (let i = 0; i < this.nextStepButtons.length; i++) {
       this.nextStepButtons[i].addEventListener('click', () => {
-        this.changeStep(i+2);
+        this.changeStep(i + 2);
       });
     }
   }
@@ -176,6 +222,7 @@ class Form {
   changeStep(step) {
     this.step = step;
     this.setStep();
+    console.log(step);
   }
 
   allowStepChange() {
