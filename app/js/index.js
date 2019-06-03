@@ -20,6 +20,29 @@ class Form {
         'address-street': 'Ulica',
         'address-building': 'Numer budynku/mieszkania',
       },
+      errors: {
+        'required-input': 'To pole jest obowiązkowe.',
+        username: {
+          'too-short': 'Nazwa jest za krótka.',
+          'first-char': 'Nazwa musi zaczynać się literą lub cyfrą.',
+          'last-char': 'Nazwa musi kończyć się literą lub cyfrą.'
+        },
+        email: {
+          'format': 'Niepoprawny format adresu email.',
+          'first-char': 'Adres musi zaczynać się literą lub cyfrą.'
+        },
+        password: {
+          'too-short': 'Hasło jest za krótkie.',
+          'three-chars': 'Hasło nie może zawierać trzech identycznych znaków pod rząd.',
+          'like-username': 'Hasło nie może być podobne do nazwy użytkownika',
+          'like-email': 'Hasło nie może być podobne od adresu email',
+          'different': 'Hasła nie mogą się różnić'
+        },
+        phoneNumber: {
+          'only-digits': 'Numer telefonu może zawierać tylko cyfry',
+          'format': 'Nieprawidłowy numer telefonu'
+        },
+      }
     };
 
     this.Data = {};
@@ -211,8 +234,9 @@ class Form {
   }
 
   initPhoneNumberInput() {
-    this.InputElementsObject[2]['phone-number'].value = '+48';
-    this.InputElementsObject[2]['phone-number'].addEventListener('input', input => {
+    let DOMPhoneNumberInput = this.id('phone-number');
+    DOMPhoneNumberInput.value = '+48';
+    DOMPhoneNumberInput.addEventListener('input', input => {
       if (!input.value.startsWith('+48')) input.value = '+48';
     });
   }
@@ -253,63 +277,63 @@ class Form {
   }
 
   validateInput(input) {
+    if (input.value === '' && input.required) {
+      return {result: false, reason: this.Lang.errors['required-input']}
+    }
     if (input.id === 'username') {
       if (!input.checkValidity()) {
-        return {result: false, reason: 'Username is too short.'}
+        return {result: false, reason: this.Lang.errors.username['too-short']}
       }
       if (!(new RegExp(/^[a-zA-Z0-9]/)).test(input.value)) {
-        return {result: false, reason: 'Username must start with a letter or a digit'};
+        return {result: false, reason: this.Lang.errors.username['first-char']};
       }
       if (!(new RegExp(/[a-zA-Z0-9]$/)).test(input.value)) {
-        return {result: false, reason: 'Username must end with a letter or a digit'};
+        return {result: false, reason: this.Lang.errors.username['last-char']};
       }
     } else if (input.id === 'email') {
       if (!input.checkValidity()) {
-        return {result: false, reason: 'Email address incorrect.'}
+        return {result: false, reason: this.Lang.errors.email['format']}
       }
       if (!(new RegExp(/^[a-zA-Z0-9]/)).test(input.value)) {
-        return {result: false, reason: 'Email address must start with a letter or a digit'};
+        return {result: false, reason: this.Lang.errors.email['first-char']};
       }
     } else if (input.id === 'password' || input.id === 'repeat-password') {
       let passwordInput = this.id('password');
       let retypepwInput = this.id('repeat-password');
 
       if (!passwordInput.checkValidity()) {
-        return {result: false, reason: 'Password is too short.'}
+        return {result: false, reason: this.Lang.errors.password['too-short']}
       }
       if ((new RegExp(/(\w)\1{2}/)).test(passwordInput.value)) {
-        return {result: false, reason: 'Password cannot have 3 same characters in a row.'}
+        return {result: false, reason: this.Lang.errors.password['three-chars']}
       }
       if (passwordInput.value.toLowerCase() === this.Data.username.toLowerCase() ||
         passwordInput.value.toLowerCase().includes(this.Data.username.toLowerCase())) {
-        return {result: false, reason: 'Password cannot be similar to username.'}
+        return {result: false, reason: this.Lang.errors.password['like-username']}
       }
       if (typeof retypepwInput.value !== 'undefined' && retypepwInput.value !== '') {
         if (passwordInput.value !== retypepwInput.value) {
-          return {result: false, reason: 'Passwords cannot be different.'}
+          return {result: false, reason: this.Lang.errors.password['different']}
         }
       }
       let valueLC = input.value.toLowerCase();
       let emailLC = this.Data.email.toLowerCase();
       if (valueLC === emailLC ||
         (emailLC !== '' && valueLC.includes(emailLC.slice(0, emailLC.indexOf('@'))))) {
-        return {result: false, reason: 'Password cannot be similar to email address.'}
+        return {result: false, reason: this.Lang.errors.password['like-email']}
       }
     } else if (input.id === 'repeat-password') {
       if (input.value !== this.Data.password) {
-        return {result: false, reason: 'Passwords cannot be different.'}
+        return {result: false, reason: this.Lang.errors.password['different']}
       }
     } else if (input.id === 'phone-number') {
       if (!(new RegExp(/^[0-9+]+$/)).test(input.value)) {
-        return {result: false, reason: 'Phone number can contain only numbers.'}
+        return {result: false, reason: this.Lang.errors.phoneNumber['only-digits']}
       }
       if (input.value.length < 12 && input.value.length > 3) {
-        return {result: false, reason: 'Invalid phone number.'}
+        return {result: false, reason: this.Lang.errors.phoneNumber['format']}
       }
     } else if (input.id === 'first-name' || input.id === 'last-name') {
-      if (input.value === '' && input.required) {
-        return {result: false, reason: 'Name is required.'}
-      }
       if (!(new RegExp(/^[a-zA-Z ']+$/)).test(input.value) && input.value !== '') {
         return {result: false, reason: 'Name can contain only letters, spaces and an apostrophe.'}
       }
