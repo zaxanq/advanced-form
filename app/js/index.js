@@ -159,17 +159,17 @@ class Form {
 
     for (let i = 1; i <= this.Inputs[i - 1].length; i++) {
       let rowElement = this.createElement('div', 'row', pageElement);
-      let cellLeftElement = this.createElement('div','cell', rowElement);
-      let cellRightElement = this.createElement('div','cell', rowElement);
-      this.createElement('div','validation', cellLeftElement);
-      let inputContainerElement = this.createElement('div','input-container', cellLeftElement);
+      let cellLeftElement = this.createElement('div', 'cell', rowElement);
+      let cellRightElement = this.createElement('div', 'cell', rowElement);
+      this.createElement('div', 'validation', cellLeftElement);
+      let inputContainerElement = this.createElement('div', 'input-container', cellLeftElement);
 
       let labelElement = this.createElement('label', 'input-label', cellRightElement);
       labelElement.setAttribute('for', this.Inputs[n - 1][i - 1].inputId);
       labelElement.innerText = this.Lang.inputs[this.Inputs[n - 1][i - 1].inputId];
 
       inputContainerElement.append(this.InputElementsObject[n][labelElement.getAttribute('for')]);
-      this.createElement('span','input-error', inputContainerElement);
+      this.createElement('span', 'input-error', inputContainerElement);
     }
     let lastRowElement = this.createElement('div', ['row', 'row--one-element'], pageElement);
     let nextStepButton = this.createElement('button', ['button', 'button--next-step'], lastRowElement);
@@ -204,23 +204,28 @@ class Form {
   }
 
   setStep() {
+    this.checkStepInputs();
     for (let i = 0; i < this.stepCount; i++) {
       this.removeClass('tab--active', this.tabs[i]);
       this.removeClass('page--active', this.pages[i]);
       this.removeClass('tab--disabled', this.tabs[i]);
       this.hideElement(this.pages[i]);
     }
-    for (let i = this.step; i < this.stepCount; i++) {
-      if (!this.hasClass('tab--available', this.tabs[i])) {
-        this.addClass('tab--disabled', this.tabs[i]);
+    if (this.step > this.stepCount) {
+      this.class('content').innerText = 'koniec';
+    } else {
+      for (let i = this.step; i < this.stepCount; i++) {
+        if (!this.hasClass('tab--available', this.tabs[i])) {
+          this.addClass('tab--disabled', this.tabs[i]);
+        }
       }
+      this.showElement(this.pages[this.step - 1]);
+      this.addClass('tab--available', this.tabs[this.step - 1]);
+      setTimeout(() => {
+        this.addClass('tab--active', this.tabs[this.step - 1]);
+        this.addClass('page--active', this.pages[this.step - 1]);
+      }, 0);
     }
-    this.showElement(this.pages[this.step - 1]);
-    this.addClass('tab--available', this.tabs[this.step - 1]);
-    setTimeout(() => {
-      this.addClass('tab--active', this.tabs[this.step - 1]);
-      this.addClass('page--active', this.pages[this.step - 1]);
-    }, 0);
   }
 
   // -------------------- Content -------------------- //
@@ -236,8 +241,10 @@ class Form {
   initPhoneNumberInput() {
     let DOMPhoneNumberInput = this.id('phone-number');
     DOMPhoneNumberInput.value = '+48';
-    DOMPhoneNumberInput.addEventListener('input', input => {
-      if (!input.value.startsWith('+48')) input.value = '+48';
+    DOMPhoneNumberInput.addEventListener('input', function () {
+      if (!this.value.startsWith('+48')) {
+        this.value = '+48';
+      }
     });
   }
 
@@ -252,6 +259,18 @@ class Form {
           this.addClass('validation--valid', validator);
           this.renderInputError(errorContainer, '');
           if (this.checkStepInputs()) {
+            if (input.id === 'password' || input.id === 'repeat-password') {
+              let secondPWInput;
+              if (input.id === 'password') {
+                secondPWInput = this.id('repeat-password');
+              } else {
+                secondPWInput = this.id('password');
+              }
+              this.removeClass('validation--invalid', secondPWInput.parentElement.previousElementSibling);
+              this.addClass('validation--valid', secondPWInput.parentElement.previousElementSibling);
+              this.renderInputError(secondPWInput.nextElementSibling, '');
+              this.validateInput(this.id('repeat-password'));
+            }
             this.allowStepChange();
           }
         } else {
@@ -338,8 +357,8 @@ class Form {
         return {result: false, reason: 'Name can contain only letters, spaces and an apostrophe.'}
       }
     } else if (input.id === 'birth-date') {
-      if (!input.checkValidity() ||
-        !(new RegExp(/^([0-9]{2})+\.+([0-9]{2})+\.+[0-9]{4}/))
+      if (input.value !== '' && (!input.checkValidity() ||
+        !(new RegExp(/^([0-9]{2})+\.+([0-9]{2})+\.+[0-9]{4}/)))
           .test(input.value)) {
         return {result: false, reason: 'Invalid date format.'}
       }
@@ -383,19 +402,10 @@ class Form {
   }
 
   checkStepInputs() {
-    if (this.step === 1) {
-      if (this.checkInputs(['username', 'email', 'password', 'repeat-password'])) {
-        return true;
-      }
-    } else if (this.step === 2) {
-      if (this.checkInputs(['first-name', 'last-name', 'phone-number', 'birth-date'])) {
-        return true;
-      }
-    } else if (this.step === 3) {
-      if (this.checkInputs(['address-city', 'address-zip', 'address-street', 'address-building'])) {
-        return true;
-      }
-    } else if (this.step === 4) {
+    let inputIds = this.InputElementsArray.map(input => input.id);
+
+    if (this.checkInputs(inputIds.slice(4 * (this.step - 1), 4 * this.step))) {
+      console.log(this.checkInputs(inputIds.slice(4 * (this.step - 1), 4 * this.step)));
       return true;
     }
     return false;
@@ -425,7 +435,6 @@ class Form {
   changeStep(step) {
     this.step = step;
     this.setStep();
-    console.log(step);
   }
 
   allowStepChange() {
