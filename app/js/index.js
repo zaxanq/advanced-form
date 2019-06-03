@@ -1,13 +1,148 @@
 class Form {
   init() {
-    this.step = 3;
+    this.step = 1;
     this.stepCount = 5;
+
+    this.Lang = {
+      'step': 'Krok',
+      'proceed': 'Dalej',
+      inputs: {
+        'username': 'Nazwa użytkownika',
+        'email': 'Adres email',
+        'password': 'Hasło',
+        'repeat-password': 'Powtórz hasło',
+        'first-name': 'Imię',
+        'last-name': 'Nazwisko',
+        'phone-number': 'Numer telefonu',
+        'birth-date': 'Data urodzenia',
+        'address-city': 'Miasto',
+        'address-zip': 'Kod pocztowy',
+        'address-street': 'Ulica',
+        'address-building': 'Numer budynku/mieszkania',
+      },
+    };
+
+    this.Data = {};
+
+    this.initInputs();
+    this.createElements();
     this.registerElements();
     this.initNextStepButton();
     this.disableStepChange();
     this.setStep();
     this.initValidators();
-    this.Data = {};
+  }
+
+  // -------------------- Form generation ------------------- //
+
+  initInputs() {
+    let Input = function Input(id, minlength, maxlength, placeholder, type, label, required = false) {
+      this.inputId = id;
+      this.minlen = minlength;
+      this.maxlen = maxlength;
+      this.placeholder = placeholder;
+      this.type = type;
+      this.label = label;
+      this.required = required;
+
+      this.create = (function () {
+        let input = document.createElement('input');
+        input.id = this.inputId;
+        input.type = this.type;
+        input.minLength = this.minlen;
+        input.maxLength = this.maxlen;
+        input.placeholder = this.placeholder;
+        input.required = this.required;
+        input.classList.add('input', 'input--text');
+        return input;
+      }).bind(this);
+    };
+
+    this.Inputs = [
+      [
+        new Input('username', 4, 16, 'JanKow', 'text', this.Lang['username'], true),
+        new Input('email', 4, 128, 'jan.kowalski@gmail.com', 'email', this.Lang['email'], true),
+        new Input('password', 6, 32, 'hasło123', 'password', this.Lang['password'], true),
+        new Input('repeat-password', 6, 32, 'hasło123', 'password', this.Lang['repeat-password'], true),
+      ],
+      [
+        new Input('first-name', 2, 32, 'Jan', 'text', this.Lang['first-name'], true),
+        new Input('last-name', 0, 32, 'Kowalski', 'text', this.Lang['last-name']),
+        new Input('phone-number', 0, 12, '+48123456789', 'text', this.Lang['phone-number']),
+        new Input('birth-date', 10, 32, '31.12.1970', 'text', this.Lang['birth-date']),
+      ],
+      [
+        new Input('address-city', 2, 32, 'Warszawa', 'text', this.Lang['address-city'], true),
+        new Input('address-zip', 0, 6, '00-000', 'text', this.Lang['address-zip']),
+        new Input('address-street', 0, 32, 'Katowicka', 'text', this.Lang['address-street']),
+        new Input('address-building', 0, 32, '25/4A', 'text', this.Lang['address-building']),
+      ],
+      [
+        new Input('012', 0, 32, 'Warszawa', 'text'),
+        new Input('034', 0, 32, '00-000', 'text'),
+        new Input('056', 0, 32, 'Katowicka', 'text'),
+        new Input('078', 0, 32, '25/4A', 'text'),
+      ],
+      [
+        new Input('112', 0, 32, 'Warszawa', 'text'),
+        new Input('134', 0, 32, '00-000', 'text'),
+        new Input('156', 0, 32, 'Katowicka', 'text'),
+        new Input('178', 0, 32, '25/4A', 'text'),
+      ]
+    ];
+  }
+
+  createElements() {
+    for (let i = 1; i <= this.stepCount; i++) {
+      this.createTab(i);
+      this.createPage(i);
+    }
+  }
+
+  createTab(n) {
+    let menuItemElement = document.createElement('li');
+    this.addClass(['menu__item', 'tab', 'tab--disabled'], menuItemElement);
+    if (n === 1) {
+      let menuElement = document.createElement('ul');
+      this.addClass('menu', menuElement);
+      this.class('tabs').append(menuElement);
+
+      this.addClass(['tab--available', 'tab--active'], menuItemElement);
+      this.removeClass('tab--disabled', menuItemElement)
+    }
+    menuItemElement.innerText = `${this.Lang['step']} ${n}`;
+    this.class('menu').append(menuItemElement);
+  }
+
+  createPage(n) {
+    let pageElement = document.createElement('div');
+    this.addClass(['content__page', `content__page--${n}`], pageElement);
+
+    if (n === 1) {
+      this.addClass('page--active', pageElement);
+    }
+
+    this.class('content').append(pageElement);
+
+    for (let i = 1; i <= this.Inputs[i - 1].length; i++) {
+      let rowElement = this.createElement('div', 'row', pageElement);
+      let cellLeftElement = this.createElement('div','cell', rowElement);
+      let cellRightElement = this.createElement('div','cell', rowElement);
+      this.createElement('div','validation', cellLeftElement);
+      let inputContainerElement = this.createElement('div','input-container', cellLeftElement);
+
+      let labelElement = this.createElement('label', 'input-label', cellRightElement);
+      labelElement.setAttribute('for', this.Inputs[n - 1][i - 1].inputId);
+      labelElement.innerText = this.Lang.inputs[this.Inputs[n - 1][i - 1].inputId];
+
+      inputContainerElement.append((this.Inputs[n - 1][i - 1]).create());
+      this.createElement('span','input-error', inputContainerElement);
+
+      this.class(`content__page--${n}`).append();
+    }
+    let lastRowElement = this.createElement('div', ['row', 'row--one-element'], pageElement);
+    let nextStepButton = this.createElement('button', ['button', 'button--next-step'], lastRowElement);
+    nextStepButton.innerText = this.Lang['proceed'];
   }
 
   registerElements() {
@@ -24,7 +159,6 @@ class Form {
     for (let i = 0; i < this.tabs.length; i++) {
       this.tabs[i].addEventListener('click', () => {
         if (this.allowTabStepChange(i)) {
-          console.log(i);
           this.changeStep(i + 1);
         }
       });
@@ -69,7 +203,7 @@ class Form {
   }
 
   initPhoneNumberInput() {
-    let phoneNumberInput =  this.id('phone-number');
+    let phoneNumberInput = this.id('phone-number');
     phoneNumberInput.value = '+48';
     phoneNumberInput.addEventListener('input', () => {
       if (!this.id('phone-number').value.startsWith('+48')) {
@@ -112,7 +246,6 @@ class Form {
     if (input.value !== '' || (input.id === 'phone-number' && input.value !== '+48')) {
       this.Data[input.id] = input.value;
     }
-    console.log(this.Data);
   }
 
   validateInput(input) {
@@ -148,9 +281,9 @@ class Form {
         return {result: false, reason: 'Password cannot be similar to username.'}
       }
       if (typeof retypepwInput.value !== 'undefined' && retypepwInput.value !== '') {
-          if (passwordInput.value !== retypepwInput.value) {
-            return {result: false, reason: 'Passwords cannot be different.'}
-          }
+        if (passwordInput.value !== retypepwInput.value) {
+          return {result: false, reason: 'Passwords cannot be different.'}
+        }
       }
       let valueLC = input.value.toLowerCase();
       let emailLC = this.Data.email.toLowerCase();
@@ -195,14 +328,14 @@ class Form {
   }
 
   checkDay(date) {
-      // check february
+    // check february
     if ((date[0] > 28 && date[1] === 2 && (date[2] % 4 !== 0 && date[2] % 100 !== 0) || (date[2] % 100 === 0)) ||
       // check april, june, september & november
-      (date[0] > 30 && [4,6,9,11].includes(date[1])) ||
+      (date[0] > 30 && [4, 6, 9, 11].includes(date[1])) ||
       // check january, march, may, july, august, october & december
       (date[0]) > 31 ||
       date[0] <= 0) {
-        return false;
+      return false;
     }
     return true;
   }
@@ -242,7 +375,6 @@ class Form {
 
   checkInputs(inputs) {
     for (let i = 0; i < inputs.length; i++) {
-      console.log(inputs[i], !this.id(inputs[i]).value, this.id(inputs[i]).value === '', this.id(inputs[i]).required, !this.validateInput(this.id(inputs[i])).result);
       if (((!this.id(inputs[i]).value || this.id(inputs[i]).value === '') && this.id(inputs[i]).required) ||
         !this.validateInput(this.id(inputs[i])).result) {
         return false;
@@ -287,7 +419,13 @@ class Form {
   }
 
   addClass(className, element) {
-    element.classList.add(className);
+    if (className.length && typeof className === 'object') {
+      className.map(name => {
+        element.classList.add(name);
+      });
+    } else {
+      element.classList.add(className);
+    }
   }
 
   removeClass(className, element) {
@@ -299,11 +437,22 @@ class Form {
   }
 
   showElement(element) {
-    element.style.display ='block';
+    element.style.display = 'block';
   }
 
   hideElement(element) {
     element.style.display = 'none';
+  }
+
+  createElement(tagName, className, parentElement) {
+    let element = document.createElement(tagName);
+    this.addClass(className, element);
+    if (typeof parentElement === 'string') {
+      this.class(parentElement).append(element);
+    } else {
+      parentElement.append(element);
+    }
+    return element;
   }
 }
 
