@@ -90,6 +90,16 @@ class Form {
         new Input('178', 0, 32, '25/4A', 'text'),
       ]
     ];
+
+    this.InputElementsObject = {};
+    this.InputElementsArray = [];
+    for (let i = 0; i < this.Inputs.length; i++) {
+      this.InputElementsObject[i + 1] = {};
+      for (let j = 0; j < this.Inputs[i].length; j++) {
+        this.InputElementsObject[i + 1][this.Inputs[i][j].inputId] = (this.Inputs[i][j].create());
+        this.InputElementsArray.push(this.Inputs[i][j].create());
+      }
+    }
   }
 
   createElements() {
@@ -135,10 +145,8 @@ class Form {
       labelElement.setAttribute('for', this.Inputs[n - 1][i - 1].inputId);
       labelElement.innerText = this.Lang.inputs[this.Inputs[n - 1][i - 1].inputId];
 
-      inputContainerElement.append((this.Inputs[n - 1][i - 1]).create());
+      inputContainerElement.append(this.InputElementsObject[n][labelElement.getAttribute('for')]);
       this.createElement('span','input-error', inputContainerElement);
-
-      this.class(`content__page--${n}`).append();
     }
     let lastRowElement = this.createElement('div', ['row', 'row--one-element'], pageElement);
     let nextStepButton = this.createElement('button', ['button', 'button--next-step'], lastRowElement);
@@ -149,6 +157,7 @@ class Form {
     this.tabs = this.class('tab', false);
     this.pages = this.class('content__page', false);
 
+    this.DOMInputs = this.class('input--text', false);
     this.addRequireMarks();
     this.initPhoneNumberInput();
     this.setTabClicks();
@@ -194,27 +203,22 @@ class Form {
   // -------------------- Content -------------------- //
 
   addRequireMarks() {
-    let inputs = document.getElementsByTagName('input');
-    [...inputs].map(input => {
-      if (input.required) {
-        this.addClass('required', input.parentNode);
+    [...this.DOMInputs].map((inputElement, index) => {
+      if (this.InputElementsArray[index].required) {
+        this.addClass('required', inputElement.parentNode);
       }
     });
   }
 
   initPhoneNumberInput() {
-    let phoneNumberInput = this.id('phone-number');
-    phoneNumberInput.value = '+48';
-    phoneNumberInput.addEventListener('input', () => {
-      if (!this.id('phone-number').value.startsWith('+48')) {
-        this.id('phone-number').value = '+48';
-      }
+    this.InputElementsObject[2]['phone-number'].value = '+48';
+    this.InputElementsObject[2]['phone-number'].addEventListener('input', input => {
+      if (!input.value.startsWith('+48')) input.value = '+48';
     });
   }
 
   initValidators() {
-    this.textInputs = this.class('input--text', false);
-    [...this.textInputs].map(input => {
+    [...this.DOMInputs].map(input => {
       let validator = input.parentElement.previousElementSibling;
       let errorContainer = input.nextElementSibling;
       input.addEventListener('input', () => {
