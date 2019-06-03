@@ -105,7 +105,7 @@
           <div class="cell">
             <div class="validation"></div>
             <div class="input-container">
-              <input class="input input--text" id="last-name" maxlength="32" minlength="2"
+              <input class="input input--text" id="last-name" maxlength="32" minlength="0"
                      name="register__last-name" placeholder="Doe" size="16" type="text">
               <span class="input-error"></span>
             </div>
@@ -119,7 +119,7 @@
           <div class="cell">
             <div class="validation"></div>
             <div class="input-container">
-              <input class="input input--text" id="phone-number" maxlength="12" minlength="2"
+              <input class="input input--text" id="phone-number" maxlength="12" minlength="0"
                      name="register__phone-number" placeholder="+48789456123" size="16" type="text">
               <span class="input-error"></span>
             </div>
@@ -133,13 +133,13 @@
           <div class="cell">
             <div class="validation"></div>
             <div class="input-container">
-              <input class="input input--text" id="address-city" maxlength="32" minlength="2"
-                     name="register__address-city" placeholder="Doe" size="16" type="text">
+              <input class="input input--text" id="birth-date" maxlength="32" minlength="10"
+                     name="register__birth-date" placeholder="DD.MM.YYYY" required size="16" type="text">
               <span class="input-error"></span>
             </div>
           </div>
           <div class="cell">
-            <label for="address-city">Phone number</label>
+            <label for="birth-date">Date of birth</label>
           </div>
         </div>
 
@@ -192,6 +192,6 @@
     </div>
   </main>
 </div>
-<script src="js/app.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>

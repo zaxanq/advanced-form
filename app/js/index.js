@@ -72,8 +72,8 @@ class Form {
     let phoneNumberInput =  this.id('phone-number');
     phoneNumberInput.value = '+48';
     phoneNumberInput.addEventListener('input', () => {
-      if (!this.id('phone-number').value.startsWith('+')) {
-        this.id('phone-number').value = '+';
+      if (!this.id('phone-number').value.startsWith('+48')) {
+        this.id('phone-number').value = '+48';
       }
     });
   }
@@ -85,7 +85,6 @@ class Form {
       let errorContainer = input.nextElementSibling;
       input.addEventListener('input', () => {
         let validation = this.validateInput(input);
-        console.log('validation');
         if (validation.result) {
           this.removeClass('validation--invalid', validator);
           this.addClass('validation--valid', validator);
@@ -165,7 +164,7 @@ class Form {
       if (!(new RegExp(/^[0-9+]+$/)).test(input.value)) {
         return {result: false, reason: 'Phone number can contain only numbers.'}
       }
-      if (input.value.length < 12) {
+      if (input.value.length < 12 && input.value.length > 3) {
         return {result: false, reason: 'Invalid phone number.'}
       }
     } else if (input.id === 'first-name' || input.id === 'last-name') {
@@ -175,6 +174,16 @@ class Form {
       if (!(new RegExp(/^[a-zA-Z ']+$/)).test(input.value) && input.value !== '') {
         return {result: false, reason: 'Name can contain only letters, spaces and an apostrophe.'}
       }
+    } else if (input.id === 'birth-date') {
+      if (!input.checkValidity() ||
+        !(new RegExp(/^([0-9]{2})+\.+([0-9]{2})+\.+[0-9]{4}/))
+          .test(input.value)) {
+        return {result: false, reason: 'Invalid date format.'}
+      }
+      let birthdate = input.value.split('.').map(data => parseInt(data));
+      if (!this.checkDay(birthdate) || !this.checkMonth(birthdate) || !this.checkYear(birthdate)) {
+        return {result: false, reason: 'Invalid date.'}
+      }
     }
     return {result: true, reason: ''};
   }
@@ -183,14 +192,42 @@ class Form {
     container.innerText = reason;
   }
 
+  checkDay(date) {
+      // check february
+    if ((date[0] > 28 && date[1] === 2 && (date[2] % 4 !== 0 && date[2] % 100 !== 0) || (date[2] % 100 === 0)) ||
+      // check april, june, september & november
+      (date[0] > 30 && [4,6,9,11].includes(date[1])) ||
+      // check january, march, may, july, august, october & december
+      (date[0]) > 31 ||
+      date[0] <= 0) {
+        return false;
+    }
+    return true;
+  }
+
+  checkMonth(date) {
+    if (date[1] > 12 || date[1] <= 0) {
+      return false;
+    }
+    return true;
+  }
+
+  checkYear(date) {
+    if (date[2] < 1900 || date[2] > (new Date).getFullYear()) {
+      return false;
+    }
+    return true;
+  }
+
   checkStepInputs() {
-    console.log(this.step);
     if (this.step === 1) {
       if (this.checkInputs(['username', 'email', 'password', 'repeat-password'])) {
         return true;
       }
     } else if (this.step === 2) {
-      return true;
+      if (this.checkInputs(['first-name', 'last-name', 'phone-number', 'birth-date'])) {
+        return true;
+      }
     } else if (this.step === 3) {
       return true;
     } else if (this.step === 4) {
@@ -201,7 +238,9 @@ class Form {
 
   checkInputs(inputs) {
     for (let i = 0; i < inputs.length; i++) {
-      if (!this.id(inputs[i]).value || this.id(inputs[i]).value === '' || !this.validateInput(this.id(inputs[i])).result) {
+      console.log(inputs[i], !this.id(inputs[i]).value, this.id(inputs[i]).value === '', this.id(inputs[i]).required, !this.validateInput(this.id(inputs[i])).result);
+      if (((!this.id(inputs[i]).value || this.id(inputs[i]).value === '') && this.id(inputs[i]).required) ||
+        !this.validateInput(this.id(inputs[i])).result) {
         return false;
       }
     }
