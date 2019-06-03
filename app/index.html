@@ -9,11 +9,11 @@
 <div class="wrapper">
   <header class="tabs">
     <ul class="menu">
-      <li class="menu__item tab tab--available">Step 1</li>
-      <li class="menu__item tab">Step 2</li>
-      <li class="menu__item tab">Step 3</li>
-      <li class="menu__item tab">Step 4</li>
-      <li class="menu__item tab">Step 5</li>
+      <li class="menu__item tab tab--available">Krok 1</li>
+      <li class="menu__item tab">Krok 2</li>
+      <li class="menu__item tab">Krok 3</li>
+      <li class="menu__item tab">Krok 4</li>
+      <li class="menu__item tab">Krok 5</li>
     </ul>
   </header>
   <main class="content">
@@ -24,12 +24,12 @@
             <div class="validation"></div>
             <div class="input-container">
               <input class="input input--text" id="username" maxlength="16" minlength="4"
-                     name="register__username" placeholder="JohnDoe" required size="16" type="text">
+                     name="register__username" placeholder="JanKow" required size="16" type="text">
               <span class="input-error"></span>
             </div>
           </div>
           <div class="cell">
-            <label for="username">Username</label>
+            <label for="username">Nazwa użytkownika</label>
           </div>
         </div>
 
@@ -38,12 +38,12 @@
             <div class="validation"></div>
             <div class="input-container">
               <input class="input input--text" id="email" maxlength="128" minlength="4"
-                     name="register__email" placeholder="john.doe@gmail.com" required size="16" type="email">
+                     name="register__email" placeholder="jan.kowalski@gmail.com" required size="16" type="email">
               <span class="input-error"></span>
             </div>
           </div>
           <div class="cell">
-            <label for="email">E-mail address</label>
+            <label for="email">Adres email</label>
           </div>
         </div>
 
@@ -52,12 +52,12 @@
             <div class="validation"></div>
             <div class="input-container">
               <input class="input input--text" id="password" maxlength="32" minlength="6"
-                     name="register__password" placeholder="johndoe123" required size="16" type="password">
+                     name="register__password" placeholder="hasło123" required size="16" type="password">
               <span class="input-error"></span>
             </div>
           </div>
           <div class="cell">
-            <label for="password">Password</label>
+            <label for="password">Hasło</label>
           </div>
         </div>
 
@@ -66,19 +66,19 @@
             <div class="validation"></div>
             <div class="input-container">
               <input class="input input--text" id="repeat-password" maxlength="32" minlength="6"
-                     name="register__repeat-password" placeholder="johndoe123" required size="16" type="password">
+                     name="register__repeat-password" placeholder="hasło123" required size="16" type="password">
               <span class="input-error"></span>
             </div>
           </div>
           <div class="cell">
-            <label for="repeat-password">Repeat password</label>
+            <label for="repeat-password">Powtórz hasło</label>
           </div>
         </div>
 
         <div class="row row--one-element">
           <div class="cell">
-            <button class="button button--next-step">Proceed</button>
-            <span class="input-error">To proceed please fill the inputs</span>
+            <button class="button button--next-step">Dalej</button>
+            <span class="input-error">Wypełnij wymagane pola by kontynuować</span>
           </div>
         </div>
 
@@ -92,12 +92,12 @@
             <div class="validation"></div>
             <div class="input-container">
               <input class="input input--text" id="first-name" maxlength="32" minlength="2"
-                     name="register__first-name" placeholder="John" required size="16" type="text">
+                     name="register__first-name" placeholder="Jan" required size="16" type="text">
               <span class="input-error"></span>
             </div>
           </div>
           <div class="cell">
-            <label for="first-name">First name</label>
+            <label for="first-name">Imię</label>
           </div>
         </div>
 
@@ -106,12 +106,12 @@
             <div class="validation"></div>
             <div class="input-container">
               <input class="input input--text" id="last-name" maxlength="32" minlength="0"
-                     name="register__last-name" placeholder="Doe" size="16" type="text">
+                     name="register__last-name" placeholder="Kowalski" size="16" type="text">
               <span class="input-error"></span>
             </div>
           </div>
           <div class="cell">
-            <label for="last-name">Last name</label>
+            <label for="last-name">Nazwisko</label>
           </div>
         </div>
 
@@ -125,7 +125,7 @@
             </div>
           </div>
           <div class="cell">
-            <label for="phone-number">Phone number</label>
+            <label for="phone-number">Numer telefonu</label>
           </div>
         </div>
 
@@ -134,19 +134,19 @@
             <div class="validation"></div>
             <div class="input-container">
               <input class="input input--text" id="birth-date" maxlength="32" minlength="10"
-                     name="register__birth-date" placeholder="DD.MM.YYYY" required size="16" type="text">
+                     name="register__birth-date" placeholder="31.12.1970" required size="16" type="text">
               <span class="input-error"></span>
             </div>
           </div>
           <div class="cell">
-            <label for="birth-date">Date of birth</label>
+            <label for="birth-date">Data urodzenia</label>
           </div>
         </div>
 
         <div class="row row--one-element">
           <div class="cell">
-            <button class="button button--next-step">Proceed</button>
-            <span class="input-error">To proceed pleaes fill all the inputs</span>
+            <button class="button button--next-step">Dalej</button>
+            <span class="input-error">Wypełnij wymagane pola by kontynuować</span>
           </div>
         </div>
       </div>
@@ -154,12 +154,66 @@
 
     <div class="content__page--3 content__page">
       <div class="block">
+        <div class="row">
+          <div class="cell">
+            <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="address-city" maxlength="32" minlength="2"
+                     name="register__address-city" placeholder="Warszawa" required size="16" type="text">
+              <span class="input-error"></span>
+            </div>
+          </div>
+          <div class="cell">
+            <label for="address-city">Miasto</label>
+          </div>
+        </div>
 
+        <div class="row">
+          <div class="cell">
+            <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="address-zip" maxlength="6" minlength="0"
+                     name="register__address-zip" placeholder="00-000" size="16" type="text">
+              <span class="input-error"></span>
+            </div>
+          </div>
+          <div class="cell">
+            <label for="address-zip">Kod pocztowy</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="cell">
+            <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="address-street" maxlength="6" minlength="0"
+                     name="register__address-street" placeholder="Katowicka" size="16" type="text">
+              <span class="input-error"></span>
+            </div>
+          </div>
+          <div class="cell">
+            <label for="address-street">Ulica</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="cell">
+            <div class="validation"></div>
+            <div class="input-container">
+              <input class="input input--text" id="address-building" maxlength="6" minlength="0"
+                     name="register__address-building" placeholder="25/4A" size="16" type="text">
+              <span class="input-error"></span>
+            </div>
+          </div>
+          <div class="cell">
+            <label for="address-building">Numer budynku/mieszkania</label>
+          </div>
+        </div>
 
         <div class="row row--one-element">
           <div class="cell">
-            <button class="button button--next-step">Proceed</button>
-            <span class="input-error">To proceed pleaes fill all the inputs</span>
+            <button class="button button--next-step">Dalej</button>
+            <span class="input-error">Wypełnij wymagane pola by kontynuować</span>
           </div>
         </div>
       </div>
@@ -171,8 +225,8 @@
 
         <div class="row row--one-element">
           <div class="cell">
-            <button class="button button--next-step">Proceed</button>
-            <span class="input-error">To proceed pleaes fill all the inputs</span>
+            <button class="button button--next-step">Dalej</button>
+            <span class="input-error">Wypełnij wymagane pola by kontynuować</span>
           </div>
         </div>
       </div>
@@ -184,8 +238,8 @@
 
         <div class="row row--one-element">
           <div class="cell">
-            <button class="button button--next-step">Proceed</button>
-            <span class="input-error">To proceed pleaes fill all the inputs</span>
+            <button class="button button--next-step">Dalej</button>
+            <span class="input-error">Wypełnij wymagane pola by kontynuować</span>
           </div>
         </div>
       </div>

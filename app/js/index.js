@@ -1,6 +1,6 @@
 class Form {
   init() {
-    this.step = 2;
+    this.step = 3;
     this.stepCount = 5;
     this.registerElements();
     this.initNextStepButton();
@@ -109,7 +109,9 @@ class Form {
     if (input.id === 'first-name' || input.id === 'last-name') {
       input.value = input.value.charAt(0).toUpperCase() + input.value.slice(1);
     }
-    this.Data[input.id] = input.value;
+    if (input.value !== '' || (input.id === 'phone-number' && input.value !== '+48')) {
+      this.Data[input.id] = input.value;
+    }
     console.log(this.Data);
   }
 
@@ -229,7 +231,9 @@ class Form {
         return true;
       }
     } else if (this.step === 3) {
-      return true;
+      if (this.checkInputs(['address-city', 'address-zip', 'address-street', 'address-building'])) {
+        return true;
+      }
     } else if (this.step === 4) {
       return true;
     }
