@@ -121,12 +121,6 @@ class Form {
         new Input('034', 0, 32, '00-000', 'text'),
         new Input('056', 0, 32, 'Katowicka', 'text'),
         new Input('078', 0, 32, '25/4A', 'text'),
-      ],
-      [
-        new Input('112', 0, 32, 'Warszawa', 'text'),
-        new Input('134', 0, 32, '00-000', 'text'),
-        new Input('156', 0, 32, 'Katowicka', 'text'),
-        new Input('178', 0, 32, '25/4A', 'text'),
       ]
     ];
 
@@ -143,6 +137,7 @@ class Form {
 
   createElements() {
     for (let i = 1; i <= this.stepCount; i++) {
+      console.log(i);
       this.createTab(i);
       this.createPage(i);
     }
@@ -173,23 +168,26 @@ class Form {
 
     this.class('content').append(pageElement);
 
-    for (let i = 1; i <= this.Inputs[i - 1].length; i++) {
-      let rowElement = this.createElement('div', 'row', pageElement);
-      let cellLeftElement = this.createElement('div', 'cell', rowElement);
-      let cellRightElement = this.createElement('div', 'cell', rowElement);
-      this.createElement('div', 'validation', cellLeftElement);
-      let inputContainerElement = this.createElement('div', 'input-container', cellLeftElement);
+    if (n < this.stepCount) {
+      for (let i = 1; i <= this.Inputs[i - 1].length; i++) {
+        console.log(this.Inputs[i -1]);
+        let rowElement = this.createElement('div', 'row', pageElement);
+        let cellLeftElement = this.createElement('div', 'cell', rowElement);
+        let cellRightElement = this.createElement('div', 'cell', rowElement);
+        this.createElement('div', 'validation', cellLeftElement);
+        let inputContainerElement = this.createElement('div', 'input-container', cellLeftElement);
 
-      let labelElement = this.createElement('label', 'input-label', cellRightElement);
-      labelElement.setAttribute('for', this.Inputs[n - 1][i - 1].inputId);
-      labelElement.innerText = this.Lang.inputs[this.Inputs[n - 1][i - 1].inputId];
+        let labelElement = this.createElement('label', 'input-label', cellRightElement);
+        labelElement.setAttribute('for', this.Inputs[n - 1][i - 1].inputId);
+        labelElement.innerText = this.Lang.inputs[this.Inputs[n - 1][i - 1].inputId];
 
-      inputContainerElement.append(this.InputElementsObject[n][labelElement.getAttribute('for')]);
-      this.createElement('span', 'input-error', inputContainerElement);
+        inputContainerElement.append(this.InputElementsObject[n][labelElement.getAttribute('for')]);
+        this.createElement('span', 'input-error', inputContainerElement);
+      }
+      let lastRowElement = this.createElement('div', ['row', 'row--one-element'], pageElement);
+      let nextStepButton = this.createElement('button', ['button', 'button--next-step'], lastRowElement);
+      nextStepButton.innerText = this.Lang['proceed'];
     }
-    let lastRowElement = this.createElement('div', ['row', 'row--one-element'], pageElement);
-    let nextStepButton = this.createElement('button', ['button', 'button--next-step'], lastRowElement);
-    nextStepButton.innerText = this.Lang['proceed'];
   }
 
   registerElements() {
