@@ -1,6 +1,6 @@
 class Form {
   init() {
-    this.step = 1;
+    this.step = 2;
     this.stepCount = 5;
 
     this.Lang = {
@@ -25,10 +25,11 @@ class Form {
         username: {
           'too-short': 'Nazwa jest za krótka.',
           'first-char': 'Nazwa musi zaczynać się literą lub cyfrą.',
+          'unallowed-chars': 'Nazwa zawiera niedozwolone znaki.',
           'last-char': 'Nazwa musi kończyć się literą lub cyfrą.'
         },
         email: {
-          'format': 'Niepoprawny format adresu email.',
+          'invalid-format': 'Niepoprawny format adresu email.',
           'first-char': 'Adres musi zaczynać się literą lub cyfrą.'
         },
         password: {
@@ -40,8 +41,14 @@ class Form {
         },
         phoneNumber: {
           'only-digits': 'Numer telefonu może zawierać tylko cyfry',
-          'format': 'Nieprawidłowy numer telefonu'
+          'invalid-format': 'Nieprawidłowy numer telefonu'
         },
+        firstName: {
+          'unallowed-chars': 'Imię i nazwisko może zawierać tylko litery, spację, apostrof lub myślnik.'
+        },
+        birthDate: {
+          'invalid-format': 'Nieprawidłowy format daty'
+        }
       }
     };
 
@@ -204,7 +211,7 @@ class Form {
   }
 
   setStep() {
-    this.checkStepInputs();
+    this.checkStepInputs() ? this.allowStepChange() : this.disableStepChange();
     for (let i = 0; i < this.stepCount; i++) {
       this.removeClass('tab--active', this.tabs[i]);
       this.removeClass('page--active', this.pages[i]);
@@ -306,12 +313,15 @@ class Form {
       if (!(new RegExp(/^[a-zA-Z0-9]/)).test(input.value)) {
         return {result: false, reason: this.Lang.errors.username['first-char']};
       }
+      if (!(new RegExp(/^([a-zA-Z0-9.\-_@$^*]*)$/)).test(input.value)) {
+        return {result: false, reason: this.Lang.errors.username['unallowed-chars']}
+      }
       if (!(new RegExp(/[a-zA-Z0-9]$/)).test(input.value)) {
         return {result: false, reason: this.Lang.errors.username['last-char']};
       }
     } else if (input.id === 'email') {
       if (!input.checkValidity()) {
-        return {result: false, reason: this.Lang.errors.email['format']}
+        return {result: false, reason: this.Lang.errors.email['invalid-format']}
       }
       if (!(new RegExp(/^[a-zA-Z0-9]/)).test(input.value)) {
         return {result: false, reason: this.Lang.errors.email['first-char']};
@@ -350,17 +360,17 @@ class Form {
         return {result: false, reason: this.Lang.errors.phoneNumber['only-digits']}
       }
       if (input.value.length < 12 && input.value.length > 3) {
-        return {result: false, reason: this.Lang.errors.phoneNumber['format']}
+        return {result: false, reason: this.Lang.errors.phoneNumber['invalid-format']}
       }
     } else if (input.id === 'first-name' || input.id === 'last-name') {
-      if (!(new RegExp(/^[a-zA-Z ']+$/)).test(input.value) && input.value !== '') {
-        return {result: false, reason: 'Name can contain only letters, spaces and an apostrophe.'}
+      if (!(new RegExp(/^[a-zA-Z '\-]*$/)).test(input.value) && input.value !== '') {
+        return {result: false, reason: this.Lang.errors.firstName['unallowed-chars']}
       }
     } else if (input.id === 'birth-date') {
       if (input.value !== '' && (!input.checkValidity() ||
         !(new RegExp(/^([0-9]{2})+\.+([0-9]{2})+\.+[0-9]{4}/)))
-          .test(input.value)) {
-        return {result: false, reason: 'Invalid date format.'}
+        .test(input.value)) {
+        return {result: false, reason: this.Lang.errors.birthDate['invalid-format']}
       }
       let birthdate = input.value.split('.').map(data => parseInt(data));
       if (!this.checkDay(birthdate) || !this.checkMonth(birthdate) || !this.checkYear(birthdate)) {
@@ -438,11 +448,15 @@ class Form {
   }
 
   allowStepChange() {
-    this.nextStepButtons[this.step - 1].disabled = false;
+    if (this.step - 1 < this.stepCount) {
+      this.nextStepButtons[this.step - 1].disabled = false;
+    }
   }
 
   disableStepChange() {
-    this.nextStepButtons[this.step - 1].disabled = true;
+    if (this.step - 1 < this.stepCount) {
+      this.nextStepButtons[this.step - 1].disabled = true;
+    }
   }
 
   // -------------------- Helpful methods -------------------- //
