@@ -1,8 +1,9 @@
 class Form {
   init() {
-    this.step = 2;
+    this.step = 1;
     this.stepCount = 5;
 
+    this.evilCorp = 'Evilcorp.';
     this.Lang = {
       'step': 'Krok',
       'proceed': 'Dalej',
@@ -49,6 +50,14 @@ class Form {
         birthDate: {
           'invalid-format': 'Nieprawidłowy format daty'
         }
+      },
+      endTab: 'Dziękujemy za wypełnienie formularza',
+      endPage: {
+        'heading': 'Dziękujemy!',
+        'this-is-all': 'To już wszystko. Proces rejestracji jest już prawie zakończony.',
+        'confirm-registration': 'Prosimy o potwierdzenie rejestracji poprzez kliknięcie w odnośnik w wysłanej na podany adres wiadomości email.',
+        'active-for': 'Pamiętaj, że link aktywacyjny będzie dostępny tylko przez najbliższe 12 godzin. Po tym czasie konto zostanie usunięte.',
+        'see-you': 'Do zobaczenia w serwisie,'
       }
     };
 
@@ -219,7 +228,7 @@ class Form {
       this.hideElement(this.pages[i]);
     }
     if (this.step > this.stepCount) {
-      this.class('content').innerText = 'koniec';
+      this.showEndpage();
     } else {
       for (let i = this.step; i < this.stepCount; i++) {
         if (!this.hasClass('tab--available', this.tabs[i])) {
@@ -429,6 +438,40 @@ class Form {
       }
     }
     return true;
+  }
+
+  showEndpage() {
+    this.removeTabs();
+    this.showThanks();
+  }
+
+  removeTabs() {
+    [...this.tabs].map(tab => {
+      tab.parentNode.removeChild(tab);
+    });
+    this.class('tabs').removeChild(this.class('menu'));
+  }
+
+  showThanks() {
+    this.showTabThanks();
+    this.showPageThanks();
+  }
+
+  showTabThanks() {
+    this.createElement('div', 'tabs__endtab', 'tabs');
+    this.class('tabs__endtab').innerText = this.Lang.endTab;
+  }
+
+  showPageThanks() {
+    let endPage = this.createElement('div',['content__page', 'content__page--end', 'page--active'], this.class('content'));
+    endPage.innerHTML =
+      `<span>${this.Lang.endPage['heading']}</span>
+       <span>${this.Lang.endPage['this-is-all']}</span>
+       <span>${this.Lang.endPage['confirm-registration']}</span>
+       <span>${this.Lang.endPage['active-for']}</span>
+       <span>${this.Lang.endPage['see-you']}</span>
+       <span>${this.evilCorp}</span>
+      `;
   }
 
   // -------------------- Step mechanics ------------------- //
