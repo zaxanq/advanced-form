@@ -5,60 +5,78 @@ class Form {
 
     this.evilCorp = 'Evilcorp.';
     this.Lang = {
-      'step': 'Krok',
-      'proceed': 'Dalej',
+      step: 'Krok',
+      proceed: 'Dalej',
       inputs: {
-        'username': 'Nazwa użytkownika',
-        'email': 'Adres email',
-        'password': 'Hasło',
-        'repeat-password': 'Powtórz hasło',
-        'first-name': 'Imię',
-        'last-name': 'Nazwisko',
-        'phone-number': 'Numer telefonu',
-        'birth-date': 'Data urodzenia',
-        'address-city': 'Miasto',
-        'address-zip': 'Kod pocztowy',
-        'address-street': 'Ulica',
-        'address-building': 'Numer budynku/mieszkania',
+        username: 'Nazwa użytkownika',
+        email: 'Adres email',
+        password: 'Hasło',
+        repeatPassword: 'Powtórz hasło',
+        firstName: 'Imię',
+        lastName: 'Nazwisko',
+        phoneNumber: 'Numer telefonu',
+        birthDate: 'Data urodzenia',
+        addressCity: 'Miasto',
+        addressZip: 'Kod pocztowy',
+        addressStreet: 'Ulica',
+        addressBuilding: 'Numer budynku/mieszkania',
       },
       errors: {
-        'required-input': 'To pole jest obowiązkowe.',
+        requiredInput: 'To pole jest obowiązkowe.',
         username: {
-          'too-short': 'Nazwa jest za krótka.',
-          'first-char': 'Nazwa musi zaczynać się literą lub cyfrą.',
-          'unallowed-chars': 'Nazwa zawiera niedozwolone znaki.',
-          'last-char': 'Nazwa musi kończyć się literą lub cyfrą.'
+          tooShort: 'Nazwa jest za krótka.',
+          firstChar: 'Nazwa musi zaczynać się literą lub cyfrą.',
+          unallowedChars: 'Nazwa zawiera niedozwolone znaki.',
+          lastChar: 'Nazwa musi kończyć się literą lub cyfrą.'
         },
         email: {
-          'invalid-format': 'Niepoprawny format adresu email.',
-          'first-char': 'Adres musi zaczynać się literą lub cyfrą.'
+          invalidFormat: 'Niepoprawny format adresu email.',
+          firstChar: 'Adres musi zaczynać się literą lub cyfrą.'
         },
         password: {
-          'too-short': 'Hasło jest za krótkie.',
-          'three-chars': 'Hasło nie może zawierać trzech identycznych znaków pod rząd.',
-          'like-username': 'Hasło nie może być podobne do nazwy użytkownika',
-          'like-email': 'Hasło nie może być podobne od adresu email',
-          'different': 'Hasła nie mogą się różnić'
+          tooShort: 'Hasło jest za krótkie.',
+          threeChars: 'Hasło nie może zawierać trzech identycznych znaków pod rząd.',
+          likeUsername: 'Hasło nie może być podobne do nazwy użytkownika',
+          likeEmail: 'Hasło nie może być podobne od adresu email',
+          different: 'Hasła nie mogą się różnić'
         },
         phoneNumber: {
-          'only-digits': 'Numer telefonu może zawierać tylko cyfry',
-          'invalid-format': 'Nieprawidłowy numer telefonu'
+          onlyDigits: 'Numer telefonu może zawierać tylko cyfry',
+          invalidFormat: 'Nieprawidłowy numer telefonu'
         },
         firstName: {
-          'unallowed-chars': 'Imię i nazwisko może zawierać tylko litery, spację, apostrof lub myślnik.'
+          unallowedChars: 'Imię i nazwisko może zawierać tylko litery, spację, apostrof lub myślnik.'
         },
         birthDate: {
-          'invalid-format': 'Nieprawidłowy format daty'
+          invalidFormat: 'Nieprawidłowy format daty'
         }
+      },
+      confirmPage: {
+        pleaseConfirm: 'Potwierdź poniższe dane'
       },
       endTab: 'Dziękujemy za wypełnienie formularza',
       endPage: {
-        'heading': 'Dziękujemy!',
-        'this-is-all': 'To już wszystko. Proces rejestracji jest już prawie zakończony.',
-        'confirm-registration': 'Prosimy o potwierdzenie rejestracji poprzez kliknięcie w odnośnik w wysłanej na podany adres wiadomości email.',
-        'active-for': 'Pamiętaj, że link aktywacyjny będzie dostępny tylko przez najbliższe 12 godzin. Po tym czasie konto zostanie usunięte.',
-        'see-you': 'Do zobaczenia w serwisie,'
+        heading: 'Dziękujemy!',
+        thisIsAll: 'To już wszystko. Proces rejestracji jest już prawie zakończony.',
+        confirmRegistration: 'Prosimy o potwierdzenie rejestracji poprzez kliknięcie w odnośnik w wysłanej na podany adres wiadomości email.',
+        activeFor: 'Pamiętaj, że link aktywacyjny będzie dostępny tylko przez najbliższe 12 godzin. Po tym czasie konto zostanie usunięte.',
+        seeYou: 'Do zobaczenia w serwisie,'
       }
+    };
+
+    this.idList = {
+      username: 'username',
+      email: 'email',
+      password: 'password',
+      repeatPassword: 'repeat-password',
+      firstName: 'first-name',
+      lastName: 'last-name',
+      phoneNumber: 'phone-number',
+      birthDate: 'birth-date',
+      addressCity: 'address-city',
+      addressZip: 'address-zip',
+      addressStreet: 'address-street',
+      addressBuilding: 'address-building',
     };
 
     this.Data = {};
@@ -99,30 +117,33 @@ class Form {
 
     this.Inputs = [
       [
-        new Input('username', 4, 16, 'JanKow', 'text', this.Lang['username'], true),
-        new Input('email', 4, 128, 'jan.kowalski@gmail.com', 'email', this.Lang['email'], true),
-        new Input('password', 6, 32, 'hasło123', 'password', this.Lang['password'], true),
-        new Input('repeat-password', 6, 32, 'hasło123', 'password', this.Lang['repeat-password'], true),
+        new Input(this.idList.username, 4, 16, 'JanKow', 'text', true),
+        new Input(this.idList.email, 4, 128, 'jan.kowalski@gmail.com', 'email', true),
+        new Input(this.idList.password, 6, 32, 'hasło123', 'password', true),
+        new Input(this.idList.repeatPassword, 6, 32, 'hasło123', 'password', true),
       ],
       [
-        new Input('first-name', 2, 32, 'Jan', 'text', this.Lang['first-name'], true),
-        new Input('last-name', 0, 32, 'Kowalski', 'text', this.Lang['last-name']),
-        new Input('phone-number', 0, 12, '+48123456789', 'text', this.Lang['phone-number']),
-        new Input('birth-date', 10, 32, '31.12.1970', 'text', this.Lang['birth-date']),
+        new Input(this.idList.firstName, 2, 32, 'Jan', 'text', true),
+        new Input(this.idList.lastName, 0, 32, 'Kowalski', 'text'),
+        new Input(this.idList.phoneNumber, 0, 12, '+48123456789', 'text'),
+        new Input(this.idList.birthDate, 10, 32, '31.12.1970', 'text'),
       ],
       [
-        new Input('address-city', 2, 32, 'Warszawa', 'text', this.Lang['address-city'], true),
-        new Input('address-zip', 0, 6, '00-000', 'text', this.Lang['address-zip']),
-        new Input('address-street', 0, 32, 'Katowicka', 'text', this.Lang['address-street']),
-        new Input('address-building', 0, 32, '25/4A', 'text', this.Lang['address-building']),
+        new Input(this.idList.addressCity, 2, 32, 'Warszawa', 'text', true),
+        new Input(this.idList.addressZip, 0, 6, '00-000', 'text'),
+        new Input(this.idList.addressStreet, 0, 32, 'Katowicka', 'text'),
+        new Input(this.idList.addressBuilding, 0, 32, '25/4A', 'text'),
       ],
       [
         new Input('012', 0, 32, 'Warszawa', 'text'),
         new Input('034', 0, 32, '00-000', 'text'),
         new Input('056', 0, 32, 'Katowicka', 'text'),
-        new Input('078', 0, 32, '25/4A', 'text'),
+        new Input('078', 0, 32, '25/4A', 'text')
+      ],
+      [
       ]
     ];
+
 
     this.InputElementsObject = {};
     this.InputElementsArray = [];
@@ -137,7 +158,6 @@ class Form {
 
   createElements() {
     for (let i = 1; i <= this.stepCount; i++) {
-      console.log(i);
       this.createTab(i);
       this.createPage(i);
     }
@@ -154,7 +174,7 @@ class Form {
       this.addClass(['tab--available', 'tab--active'], menuItemElement);
       this.removeClass('tab--disabled', menuItemElement)
     }
-    menuItemElement.innerText = `${this.Lang['step']} ${n}`;
+    menuItemElement.innerText = `${this.Lang.step} ${n}`;
     this.class('menu').append(menuItemElement);
   }
 
@@ -170,23 +190,51 @@ class Form {
 
     if (n < this.stepCount) {
       for (let i = 1; i <= this.Inputs[i - 1].length; i++) {
-        console.log(this.Inputs[i -1]);
-        let rowElement = this.createElement('div', 'row', pageElement);
-        let cellLeftElement = this.createElement('div', 'cell', rowElement);
-        let cellRightElement = this.createElement('div', 'cell', rowElement);
-        this.createElement('div', 'validation', cellLeftElement);
-        let inputContainerElement = this.createElement('div', 'input-container', cellLeftElement);
-
-        let labelElement = this.createElement('label', 'input-label', cellRightElement);
-        labelElement.setAttribute('for', this.Inputs[n - 1][i - 1].inputId);
-        labelElement.innerText = this.Lang.inputs[this.Inputs[n - 1][i - 1].inputId];
-
-        inputContainerElement.append(this.InputElementsObject[n][labelElement.getAttribute('for')]);
-        this.createElement('span', 'input-error', inputContainerElement);
+        this.createInputPage(pageElement, n, i);
       }
-      let lastRowElement = this.createElement('div', ['row', 'row--one-element'], pageElement);
-      let nextStepButton = this.createElement('button', ['button', 'button--next-step'], lastRowElement);
-      nextStepButton.innerText = this.Lang['proceed'];
+      this.createNextStepButton(pageElement);
+    } else {
+      this.createConfirmPage(pageElement);
+      this.createNextStepButton(pageElement);
+    }
+  }
+
+  createNextStepButton(pageElement) {
+    let lastRowElement = this.createElement('div', ['row', 'row--one-element'], pageElement);
+    let nextStepButton = this.createElement('button', ['button', 'button--next-step'], lastRowElement);
+    nextStepButton.innerText = this.Lang.proceed;
+  }
+
+  createInputPage(pageElement, n, i) {
+    let rowElement = this.createElement('div', 'row', pageElement);
+    let cellLeftElement = this.createElement('div', 'cell', rowElement);
+    let cellRightElement = this.createElement('div', 'cell', rowElement);
+    this.createElement('div', 'validation', cellLeftElement);
+    let inputContainerElement = this.createElement('div', 'input-container', cellLeftElement);
+
+    let labelElement = this.createElement('label', 'input-label', cellRightElement);
+    labelElement.setAttribute('for', this.Inputs[n - 1][i - 1].inputId);
+    labelElement.innerText = this.Lang.inputs[this.Inputs[n - 1][i - 1].inputId];
+
+    inputContainerElement.append(this.InputElementsObject[n][labelElement.getAttribute('for')]);
+    this.createElement('span', 'input-error', inputContainerElement);
+  }
+
+  createConfirmPage(pageElement) {
+    let rowElement = this.createElement('div', 'row', pageElement);
+    rowElement.innerText = this.Lang.confirmPage.pleaseConfirm;
+    for (let i = 0; i < this.InputElementsArray.length; i++) {
+      let dataRow = this.createElement('div', ['row', 'row--confirm-page'], pageElement);
+      let cellLeftElement = this.createElement('div', 'cell', dataRow);
+      cellLeftElement.innerText = this.InputElementsArray[i].id;
+      console.log(this.Inputs);
+    }
+  }
+
+  fillConfirmPage() {
+    for (let i = 0; i <this.InputElementsArray.length; i++) {
+      let cellRightElement = this.createElement('div', 'cell', this.class('row--confirm-page', false)[i]);
+      cellRightElement.innerText = this.Data[this.InputElementsArray[i].id];
     }
   }
 
@@ -225,6 +273,9 @@ class Form {
       this.removeClass('tab--disabled', this.tabs[i]);
       this.hideElement(this.pages[i]);
     }
+    if (this.step === this.stepCount) {
+      this.fillConfirmPage();
+    }
     if (this.step > this.stepCount) {
       this.showEndpage();
     } else {
@@ -253,7 +304,7 @@ class Form {
   }
 
   initPhoneNumberInput() {
-    let DOMPhoneNumberInput = this.id('phone-number');
+    let DOMPhoneNumberInput = this.id(this.idList.phoneNumber);
     DOMPhoneNumberInput.value = '+48';
     DOMPhoneNumberInput.addEventListener('input', function () {
       if (!this.value.startsWith('+48')) {
@@ -273,17 +324,17 @@ class Form {
           this.addClass('validation--valid', validator);
           this.renderInputError(errorContainer, '');
           if (this.checkStepInputs()) {
-            if (input.id === 'password' || input.id === 'repeat-password') {
+            if (input.id === this.idList.password || input.id === this.idList.repeatPassword) {
               let secondPWInput;
-              if (input.id === 'password') {
-                secondPWInput = this.id('repeat-password');
+              if (input.id === this.idList.password) {
+                secondPWInput = this.id(this.idList.repeatPassword);
               } else {
-                secondPWInput = this.id('password');
+                secondPWInput = this.id(this.idList.password);
               }
               this.removeClass('validation--invalid', secondPWInput.parentElement.previousElementSibling);
               this.addClass('validation--valid', secondPWInput.parentElement.previousElementSibling);
               this.renderInputError(secondPWInput.nextElementSibling, '');
-              this.validateInput(this.id('repeat-password'));
+              this.validateInput(this.id(this.idList.repeatPassword));
             }
             this.allowStepChange();
           }
@@ -301,83 +352,83 @@ class Form {
   }
 
   saveInputValue(input) {
-    if (input.id === 'first-name' || input.id === 'last-name') {
+    if (input.id === this.idList.firstName || input.id === this.idList.lastName) {
       input.value = input.value.charAt(0).toUpperCase() + input.value.slice(1);
     }
-    if (input.value !== '' || (input.id === 'phone-number' && input.value !== '+48')) {
+    if (input.value !== '' || (input.id === this.idList.phoneNumber && input.value !== '+48')) {
       this.Data[input.id] = input.value;
     }
   }
 
   validateInput(input) {
     if (input.value === '' && input.required) {
-      return {result: false, reason: this.Lang.errors['required-input']}
+      return {result: false, reason: this.Lang.errors.requiredInput}
     }
-    if (input.id === 'username') {
+    if (input.id === this.idList.username) {
       if (!input.checkValidity()) {
-        return {result: false, reason: this.Lang.errors.username['too-short']}
+        return {result: false, reason: this.Lang.errors.username.tooShort}
       }
       if (!(new RegExp(/^[a-zA-Z0-9]/)).test(input.value)) {
-        return {result: false, reason: this.Lang.errors.username['first-char']};
+        return {result: false, reason: this.Lang.errors.username.firstChar};
       }
       if (!(new RegExp(/^([a-zA-Z0-9.\-_@$^*]*)$/)).test(input.value)) {
-        return {result: false, reason: this.Lang.errors.username['unallowed-chars']}
+        return {result: false, reason: this.Lang.errors.username.unallowedChars}
       }
       if (!(new RegExp(/[a-zA-Z0-9]$/)).test(input.value)) {
-        return {result: false, reason: this.Lang.errors.username['last-char']};
+        return {result: false, reason: this.Lang.errors.username.lastChar};
       }
-    } else if (input.id === 'email') {
+    } else if (input.id === this.idList.email) {
       if (!input.checkValidity()) {
-        return {result: false, reason: this.Lang.errors.email['invalid-format']}
+        return {result: false, reason: this.Lang.errors.email.invalidFormat}
       }
       if (!(new RegExp(/^[a-zA-Z0-9]/)).test(input.value)) {
-        return {result: false, reason: this.Lang.errors.email['first-char']};
+        return {result: false, reason: this.Lang.errors.email.firstChar};
       }
-    } else if (input.id === 'password' || input.id === 'repeat-password') {
-      let passwordInput = this.id('password');
-      let retypepwInput = this.id('repeat-password');
+    } else if (input.id === this.idList.password || input.id === this.idList.repeatPassword) {
+      let passwordInput = this.id(this.idList.password);
+      let retypepwInput = this.id(this.idList.repeatPassword);
 
       if (!passwordInput.checkValidity()) {
-        return {result: false, reason: this.Lang.errors.password['too-short']}
+        return {result: false, reason: this.Lang.errors.password.tooShort}
       }
       if ((new RegExp(/(\w)\1{2}/)).test(passwordInput.value)) {
-        return {result: false, reason: this.Lang.errors.password['three-chars']}
+        return {result: false, reason: this.Lang.errors.password.threeChars}
       }
       if (passwordInput.value.toLowerCase() === this.Data.username.toLowerCase() ||
         passwordInput.value.toLowerCase().includes(this.Data.username.toLowerCase())) {
-        return {result: false, reason: this.Lang.errors.password['like-username']}
+        return {result: false, reason: this.Lang.errors.password.likeUsername}
       }
       if (typeof retypepwInput.value !== 'undefined' && retypepwInput.value !== '') {
         if (passwordInput.value !== retypepwInput.value) {
-          return {result: false, reason: this.Lang.errors.password['different']}
+          return {result: false, reason: this.Lang.errors.password.different}
         }
       }
       let valueLC = input.value.toLowerCase();
       let emailLC = this.Data.email.toLowerCase();
       if (valueLC === emailLC ||
         (emailLC !== '' && valueLC.includes(emailLC.slice(0, emailLC.indexOf('@'))))) {
-        return {result: false, reason: this.Lang.errors.password['like-email']}
+        return {result: false, reason: this.Lang.errors.password.likeEmail}
       }
-    } else if (input.id === 'repeat-password') {
+    } else if (input.id === this.idList.repeatPassword) {
       if (input.value !== this.Data.password) {
-        return {result: false, reason: this.Lang.errors.password['different']}
+        return {result: false, reason: this.Lang.errors.password.different}
       }
-    } else if (input.id === 'phone-number') {
+    } else if (input.id === this.idList.phoneNumber) {
       if (!(new RegExp(/^[0-9+]+$/)).test(input.value)) {
-        return {result: false, reason: this.Lang.errors.phoneNumber['only-digits']}
+        return {result: false, reason: this.Lang.errors.phoneNumber.onlyDigits}
       }
       if (input.value.length < 12 && input.value.length > 3) {
-        return {result: false, reason: this.Lang.errors.phoneNumber['invalid-format']}
+        return {result: false, reason: this.Lang.errors.phoneNumber.invalidFormat}
       }
-    } else if (input.id === 'first-name' || input.id === 'last-name') {
+    } else if (input.id === this.idList.firstName || input.id === this.idList.lastName) {
       if (!(new RegExp(/^[a-zA-Z '\-]*$/)).test(input.value) && input.value !== '') {
-        return {result: false, reason: this.Lang.errors.firstName['unallowed-chars']}
+        return {result: false, reason: this.Lang.errors.firstName.unallowedChars}
       }
-    } else if (input.id === 'birth-date') {
+    } else if (input.id === this.idList.birthDate) {
       if (input.value !== '' && (!input.checkValidity() ||
-        !(new RegExp(/^([0-9]{2})+\.+([0-9]{2})+\.+[0-9]{4}/)))
-        .test(input.value)) {
-        return {result: false, reason: this.Lang.errors.birthDate['invalid-format']}
+        !(new RegExp(/^([0-9]{2})+\.+([0-9]{2})+\.+[0-9]{4}/))
+        .test(input.value))) {
+        return {result: false, reason: this.Lang.errors.birthDate.invalidFormat}
       }
       let birthdate = input.value.split('.').map(data => parseInt(data));
       if (!this.checkDay(birthdate) || !this.checkMonth(birthdate) || !this.checkYear(birthdate)) {
@@ -463,11 +514,11 @@ class Form {
   showPageThanks() {
     let endPage = this.createElement('div',['content__page', 'content__page--end', 'page--active'], this.class('content'));
     endPage.innerHTML =
-      `<span>${this.Lang.endPage['heading']}</span>
-       <span>${this.Lang.endPage['this-is-all']}</span>
-       <span>${this.Lang.endPage['confirm-registration']}</span>
-       <span>${this.Lang.endPage['active-for']}</span>
-       <span>${this.Lang.endPage['see-you']}</span>
+      `<span>${this.Lang.endPage.heading}</span>
+       <span>${this.Lang.endPage.thisIsAll}</span>
+       <span>${this.Lang.endPage.confirmRegistration}</span>
+       <span>${this.Lang.endPage.activeFor}</span>
+       <span>${this.Lang.endPage.seeYou}</span>
        <span>${this.evilCorp}</span>
       `;
   }
@@ -489,13 +540,13 @@ class Form {
   }
 
   allowStepChange() {
-    if (this.step - 1 < this.stepCount) {
+    if (this.step <= this.stepCount) {
       this.nextStepButtons[this.step - 1].disabled = false;
     }
   }
 
   disableStepChange() {
-    if (this.step - 1 < this.stepCount) {
+    if (this.step <= this.stepCount) {
       this.nextStepButtons[this.step - 1].disabled = true;
     }
   }
