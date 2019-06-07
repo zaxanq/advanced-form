@@ -8,18 +8,18 @@ class Form {
       step: 'Krok',
       proceed: 'Dalej',
       inputs: {
-        username: 'Nazwa użytkownika',
-        email: 'Adres email',
-        password: 'Hasło',
-        repeatPassword: 'Powtórz hasło',
-        firstName: 'Imię',
-        lastName: 'Nazwisko',
-        phoneNumber: 'Numer telefonu',
-        birthDate: 'Data urodzenia',
-        addressCity: 'Miasto',
-        addressZip: 'Kod pocztowy',
-        addressStreet: 'Ulica',
-        addressBuilding: 'Numer budynku/mieszkania',
+        'username': 'Nazwa użytkownika',
+        'email': 'Adres email',
+        'password': 'Hasło',
+        'repeat-password': 'Powtórz hasło',
+        'first-name': 'Imię',
+        'last-name': 'Nazwisko',
+        'phone-number': 'Numer telefonu',
+        'birth-date': 'Data urodzenia',
+        'address-city': 'Miasto',
+        'address-zip': 'Kod pocztowy',
+        'address-street': 'Ulica',
+        'address-building': 'Numer budynku/mieszkania',
       },
       errors: {
         requiredInput: 'To pole jest obowiązkowe.',
@@ -227,7 +227,6 @@ class Form {
       let dataRow = this.createElement('div', ['row', 'row--confirm-page'], pageElement);
       let cellLeftElement = this.createElement('div', 'cell', dataRow);
       cellLeftElement.innerText = this.InputElementsArray[i].id;
-      console.log(this.Inputs);
     }
   }
 
@@ -325,6 +324,7 @@ class Form {
           this.renderInputError(errorContainer, '');
           if (this.checkStepInputs()) {
             if (input.id === this.idList.password || input.id === this.idList.repeatPassword) {
+              console.log('input to password albo repeat-password');
               let secondPWInput;
               if (input.id === this.idList.password) {
                 secondPWInput = this.id(this.idList.repeatPassword);
@@ -398,13 +398,14 @@ class Form {
         passwordInput.value.toLowerCase().includes(this.Data.username.toLowerCase())) {
         return {result: false, reason: this.Lang.errors.password.likeUsername}
       }
-      if (typeof retypepwInput.value !== 'undefined' && retypepwInput.value !== '') {
+      if (retypepwInput.value !== '' && passwordInput.value !== '') {
+        console.log(`retypepwInput.value !== 'undefined' && retypepwInput.value !== ''`);
         if (passwordInput.value !== retypepwInput.value) {
           return {result: false, reason: this.Lang.errors.password.different}
         }
       }
       let valueLC = input.value.toLowerCase();
-      let emailLC = this.Data.email.toLowerCase();
+      let emailLC = this.id(this.idList.email).value.toLowerCase();
       if (valueLC === emailLC ||
         (emailLC !== '' && valueLC.includes(emailLC.slice(0, emailLC.indexOf('@'))))) {
         return {result: false, reason: this.Lang.errors.password.likeEmail}
@@ -473,7 +474,6 @@ class Form {
     let inputIds = this.InputElementsArray.map(input => input.id);
 
     if (this.checkInputs(inputIds.slice(4 * (this.step - 1), 4 * this.step))) {
-      console.log(this.checkInputs(inputIds.slice(4 * (this.step - 1), 4 * this.step)));
       return true;
     }
     return false;
