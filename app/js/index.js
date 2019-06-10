@@ -52,7 +52,8 @@ class Form {
         }
       },
       confirmPage: {
-        pleaseConfirm: 'Potwierdź poniższe dane'
+        pleaseConfirm: 'Potwierdź poniższe dane',
+        noData: 'brak informacji'
       },
       endTab: 'Dziękujemy za wypełnienie formularza',
       endPage: {
@@ -93,13 +94,12 @@ class Form {
   // -------------------- Form generation ------------------- //
 
   initInputs() {
-    let Input = function Input(id, minlength, maxlength, placeholder, type, label, required = false) {
+    let Input = function Input(id, minlength, maxlength, placeholder, type, required = false) {
       this.inputId = id;
       this.minlen = minlength;
       this.maxlen = maxlength;
       this.placeholder = placeholder;
       this.type = type;
-      this.label = label;
       this.required = required;
 
       this.create = (function () {
@@ -233,7 +233,7 @@ class Form {
   fillConfirmPage() {
     for (let i = 0; i <this.InputElementsArray.length; i++) {
       let cellRightElement = this.createElement('div', 'cell', this.class('row--confirm-page', false)[i]);
-      cellRightElement.innerText = this.Data[this.InputElementsArray[i].id];
+      cellRightElement.innerHTML = typeof this.Data[this.InputElementsArray[i].id] === 'undefined' ? `<span class="italic blank">${this.Lang.confirmPage.noData}</span>` : this.Data[this.InputElementsArray[i].id];
     }
   }
 
