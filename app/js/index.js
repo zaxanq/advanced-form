@@ -7,6 +7,7 @@ class Form {
     this.Lang = {
       step: 'Krok',
       proceed: 'Dalej',
+      confirmButton: 'Potwierdzam',
       inputs: {
         'username': 'Nazwa użytkownika',
         'email': 'Adres email',
@@ -53,7 +54,8 @@ class Form {
       },
       confirmPage: {
         pleaseConfirm: 'Potwierdź poniższe dane',
-        noData: 'brak informacji'
+        noData: 'brak informacji',
+        hidden: 'ukryte'
       },
       endTab: 'Dziękujemy za wypełnienie formularza',
       endPage: {
@@ -195,20 +197,22 @@ class Form {
       this.createNextStepButton(pageElement);
     } else {
       this.createConfirmPage(pageElement);
-      this.createNextStepButton(pageElement);
+      this.createNextStepButton(pageElement, true);
     }
   }
 
-  createNextStepButton(pageElement) {
+  createNextStepButton(pageElement, confirmButton = false) {
     let lastRowElement = this.createElement('div', ['row', 'row--one-element'], pageElement);
     let nextStepButton = this.createElement('button', ['button', 'button--next-step'], lastRowElement);
-    nextStepButton.innerText = this.Lang.proceed;
+    confirmButton ? nextStepButton.innerText = this.Lang.confirmButton : nextStepButton.innerText = this.Lang.proceed;
   }
 
   createInputPage(pageElement, n, i) {
     let rowElement = this.createElement('div', 'row', pageElement);
+
     let cellLeftElement = this.createElement('div', 'cell', rowElement);
     let cellRightElement = this.createElement('div', 'cell', rowElement);
+
     this.createElement('div', 'validation', cellLeftElement);
     let inputContainerElement = this.createElement('div', 'input-container', cellLeftElement);
 
@@ -226,14 +230,22 @@ class Form {
     for (let i = 0; i < this.InputElementsArray.length; i++) {
       let dataRow = this.createElement('div', ['row', 'row--confirm-page'], pageElement);
       let cellLeftElement = this.createElement('div', 'cell', dataRow);
-      cellLeftElement.innerText = this.InputElementsArray[i].id;
+      cellLeftElement.innerText = this.Lang.inputs[this.InputElementsArray[i].id];
     }
   }
 
   fillConfirmPage() {
     for (let i = 0; i <this.InputElementsArray.length; i++) {
       let cellRightElement = this.createElement('div', 'cell', this.class('row--confirm-page', false)[i]);
-      cellRightElement.innerHTML = typeof this.Data[this.InputElementsArray[i].id] === 'undefined' ? `<span class="italic blank">${this.Lang.confirmPage.noData}</span>` : this.Data[this.InputElementsArray[i].id];
+      if (this.InputElementsArray[i].id === this.idList.password || this.InputElementsArray[i].id === this.idList.repeatPassword) {
+        cellRightElement.innerHTML = `<span class="italic blank">${this.Lang.confirmPage.hidden}</span>`;
+      }
+      else if (this.InputElementsArray[i].id === this.idList.phoneNumber && typeof this.Data[this.InputElementsArray[i].id] !== 'undefined') {
+        console.log(this.Data[this.InputElementsArray[i].id], this.Data[this.InputElementsArray[i].id].length);
+        cellRightElement.innerHTML = this.Data[this.InputElementsArray[i].id].length <= 3 ? `<span class="italic blank">${this.Lang.confirmPage.noData}</span>` : this.Data[this.InputElementsArray[i].id];
+      } else {
+        cellRightElement.innerHTML = typeof this.Data[this.InputElementsArray[i].id] === 'undefined' ? `<span class="italic blank">${this.Lang.confirmPage.noData}</span>` : this.Data[this.InputElementsArray[i].id];
+      }
     }
   }
 
@@ -324,7 +336,6 @@ class Form {
           this.renderInputError(errorContainer, '');
           if (this.checkStepInputs()) {
             if (input.id === this.idList.password || input.id === this.idList.repeatPassword) {
-              console.log('input to password albo repeat-password');
               let secondPWInput;
               if (input.id === this.idList.password) {
                 secondPWInput = this.id(this.idList.repeatPassword);
@@ -399,7 +410,6 @@ class Form {
         return {result: false, reason: this.Lang.errors.password.likeUsername}
       }
       if (retypepwInput.value !== '' && passwordInput.value !== '') {
-        console.log(`retypepwInput.value !== 'undefined' && retypepwInput.value !== ''`);
         if (passwordInput.value !== retypepwInput.value) {
           return {result: false, reason: this.Lang.errors.password.different}
         }
